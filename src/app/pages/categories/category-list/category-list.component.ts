@@ -23,7 +23,7 @@ export class CategoryListComponent implements OnInit {
   deletarDocumento(category: Category) {
     const mustDelete = confirm("Deseja excluir este item?")
     if (mustDelete) {
-      this.categoryService.delete(category.id).subscribe(
+      this.categoryService.delete(category.id!).subscribe(
         () => this.categories = this.categories.filter(element => element != category),
         () => alert("Erro ao tentar excluir")
       )
