@@ -10,7 +10,7 @@ export class Entry{
         public date?:string,
         public paid?:boolean,
         public categoryId?: number,
-        public categoria?: Category
+        public category?: Category
     ){}
 
     static types= {
@@ -18,7 +18,7 @@ export class Entry{
         renevue: 'Receita'
     }
 
-    get paidText(): string{
+    get paidText(): string {
         return this.paid ? 'Pago' : 'Pendente';
     }
 }

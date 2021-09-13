@@ -7,7 +7,7 @@ import { Entry } from './entry.model';
 @Injectable({
   providedIn: 'root'
 })
-export class EntryServiceService {
+export class EntryService {
 
   private api: string = "api/entries";
 
@@ -58,11 +58,14 @@ export class EntryServiceService {
 
   private jsonDataToEntries(jsonData: any[]): Entry[] {
     const entries: Entry[] = [];
-    jsonData.forEach(element => entries.push(element as Entry))
+    jsonData.forEach(element => {
+      const entry = Object.assign(new Entry(), element);
+      entries.push(entry);
+    });
     return entries;
   }
 
   private jsonDataToCategory(jsonData: any): Entry {
-    return jsonData as Entry;
+    return Object.assign(new Entry(), jsonData);
   }
 }
