@@ -103,7 +103,7 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
         .subscribe(
           (category) => {
             this.category = category,
-              this.categoryForm.patchValue(category)
+            this.categoryForm.patchValue(category)
           },
           (error) => alert("Ocorreu um erro no servidor, tenta mais tarde")
         )
