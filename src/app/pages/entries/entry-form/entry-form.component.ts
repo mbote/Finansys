@@ -25,7 +25,8 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   serverErrorMessages: string[] = [];
   submittingForm: boolean = false;
   entry: Entry = new Entry();
-  categories!: Array<Category>
+  categories!: Array<Category>;
+  typeOption!: Array<any>
 
   imaskConfig = {
     mask: Number,
@@ -60,6 +61,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     this.buildEntryForm();
     this.loadEntry();
     this.loadCategories();
+    this.typeOpy();
   }
 
   ngAfterContentChecked(): void {
@@ -72,6 +74,18 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       this.createEntry();
     else
       this.updateEntry();
+  }
+
+
+  typeOpy() {
+    this.typeOption = [];
+    Object.entries(Entry.types).map(
+      ([value, text]) => {
+        this.typeOption.push({
+          text: text,
+          value: value
+        })
+      })
   }
 
   get typeOptions(): Array<any> {
@@ -131,10 +145,10 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       id: [null],
       name: [null, Validators.required, Validators.minLength(2)],
       description: [null],
-      type: ["exepnse", Validators.required],
+      type: [null, Validators.required],
       amount: [null, Validators.required],
       date: [null, Validators.required],
-      paid: [true, Validators.required],
+      paid: [null, Validators.required],
       categoryId: [null, Validators.required]
     })
   }

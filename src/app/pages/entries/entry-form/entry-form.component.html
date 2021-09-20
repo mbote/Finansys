@@ -29,7 +29,7 @@
                 <div class="col-sm-2">
                     <label for="type">Tipo </label>
                     <select id="type" name="type" class="form-control" formControlName="type">
-                        <option *ngFor="let option of typeOptions" [value]="option.value">{{ option.text }}</option>
+                        <option *ngFor="let option of typeOption" [value]="option.value">{{ option.text }}</option>
                     </select>
                     <div class="text-danger"
                         *ngIf="!entryForm.controls.type?.valid && (entryForm.controls.type?.touched || entryForm.controls.type?.dirty )">

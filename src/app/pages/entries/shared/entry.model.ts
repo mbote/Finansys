@@ -1,21 +1,21 @@
-import {Category} from '../../categories/shared/category.model'
+import { Category } from '../../categories/shared/category.model'
 
-export class Entry{
+export class Entry {
     constructor(
         public id?: number,
         public name?: string,
-        public description?:string,
+        public description?: string,
         public type?: string,
         public amount?: string,
-        public date?:string,
-        public paid?:boolean,
+        public date?: string,
+        public paid?: boolean,
         public categoryId?: number,
         public category?: Category
-    ){}
+    ) { }
 
-    static types= {
+    static types = {
         expense: 'Despesa',
-        renevue: 'Receita'
+        revenue: 'Receita'
     }
 
     get paidText(): string {
