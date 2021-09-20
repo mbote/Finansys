@@ -1,3 +1,4 @@
+import { CategoriesModule } from './../../categories/categories.module';
 import { EntriesModule } from './../entries.module';
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -5,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Entry } from '../shared/entry.model';
 import { EntryService } from '../shared/entry.service';
+import { Category } from '../../categories/shared/category.model';
+import { CategoryService } from '../../categories/shared/category.service';
 
 import { switchMap } from 'rxjs/Operators';
 import * as toastr from 'toastr';
@@ -22,18 +25,41 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   serverErrorMessages: string[] = [];
   submittingForm: boolean = false;
   entry: Entry = new Entry();
+  categories!: Array<Category>
+
+  imaskConfig = {
+    mask: Number,
+    scale: 2,
+    thousandsSeparator: '',
+    padFractionalZeros: true,
+    normalizeZeros: true,
+    radix: ','
+  };
+
+  ptBR = {
+    firstDayOfWeek: 0,
+    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado'],
+    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+    dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
+    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+      'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+    today: 'Hoje',
+    clear: 'Limpar'
+  };
 
   constructor(
     private entryService: EntryService,
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private categoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
     this.setCurrentAction();
     this.buildEntryForm();
     this.loadEntry();
+    this.loadCategories();
   }
 
   ngAfterContentChecked(): void {
@@ -46,6 +72,17 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       this.createEntry();
     else
       this.updateEntry();
+  }
+
+  get typeOptions(): Array<any> {
+    return Object.entries(Entry.types).map(
+      ([value, text]) => {
+        return {
+          text: text,
+          value: value
+        }
+      }
+    )
   }
 
   createEntry() {
@@ -91,13 +128,13 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
 
   private buildEntryForm() {
     this.entryForm = this.formBuilder.group({
-      id:[null],
-      name:[null, Validators.required, Validators.minLength(2)],
+      id: [null],
+      name: [null, Validators.required, Validators.minLength(2)],
       description: [null],
-      type:[null, Validators.required],
-      amount:[null, Validators.required],
-      date:[null, Validators.required],
-      paid:[null, Validators.required],
+      type: ["exepnse", Validators.required],
+      amount: [null, Validators.required],
+      date: [null, Validators.required],
+      paid: [true, Validators.required],
       categoryId: [null, Validators.required]
     })
   }
@@ -110,11 +147,17 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
         .subscribe(
           (entry) => {
             this.entry = entry,
-            this.entryForm.patchValue(entry)
+              this.entryForm.patchValue(entry)
           },
           (error) => toastr.error("Ocorreu um erro no servidor, tenta mais tarde")
         )
     }
+  }
+
+  private loadCategories() {
+    this.categoryService.getAll().subscribe(
+      (categories => this.categories = categories)
+    )
   }
 
   private setPageTitle() {

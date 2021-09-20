@@ -18,21 +18,91 @@
     </div>
 </div>
 
-<form [formGroup]="entryForm" (submit) = "submitForm()">
+<form [formGroup]="entryForm" (submit)="submitForm()">
     <div class="card">
         <div class="card-header">
             Informações sobre o lançamento
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-sm-4">
+                <!--tipo-->
+                <div class="col-sm-2">
+                    <label for="type">Tipo </label>
+                    <select id="type" name="type" class="form-control" formControlName="type">
+                        <option *ngFor="let option of typeOptions" [value]="option.value">{{ option.text }}</option>
+                    </select>
+                    <div class="text-danger"
+                        *ngIf="!entryForm.controls.type?.valid && (entryForm.controls.type?.touched || entryForm.controls.type?.dirty )">
+                        <div [hidden]="!entryForm.controls.type.errors?.required">dados obrigatórios</div>
+                    </div>
+                </div>
+                <!--nome-->
+                <div class="col-sm-5">
                     <label for="name">Nome </label>
-                    <input type="text" id="nome" class="form-control" formControlName="name">
-                    <div class="text-danger" *ngIf="!entryForm.controls.name?.valid && (entryForm.controls.name?.touched || entryForm.controls.name?.dirty )">
+                    <input type="text" id="name" class="form-control" formControlName="name">
+                    <div class="text-danger"
+                        *ngIf="!entryForm.controls.name?.valid && (entryForm.controls.name?.touched || entryForm.controls.name?.dirty )">
                         <div [hidden]="!entryForm.controls.name.errors?.required">dados obrigatórios</div>
                         <div [hidden]="!entryForm.controls.name.errors?.minlength">deve ter no mínimo 2 caracteres</div>
                     </div>
                 </div>
+                <!--amount-->
+                <div class="col-sm-3">
+                    <label for="name">Valor </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">kz</div>
+                        </div>
+                        <input [imask]="imaskConfig" type="text" id="amount" class="form-control text-right"
+                            formControlName="amount">
+                    </div>
+                    <div class="text-danger"
+                        *ngIf="!entryForm.controls.amount?.valid && (entryForm.controls.amount?.touched || entryForm.controls.amount?.dirty )">
+                        <div [hidden]="!entryForm.controls.amount.errors?.required">dados obrigatórios</div>
+                        <div [hidden]="!entryForm.controls.amount.errors?.minlength">deve ter no mínimo 2 caracteres
+                        </div>
+                    </div>
+                </div>
+
+                <!--date-->
+                <div class="form-group col-sm-2">
+                    <label for="date">Data </label>
+                    <p-calendar id="date" formControlName="date" inputStyleClass="from-control" dataType="string"
+                        dateFormat="dd/mm/yy" [locale]="ptBR" [showButtonBar]="true"></p-calendar>
+                    <div class="text-danger"
+                        *ngIf="!entryForm.controls.date?.valid && (entryForm.controls.date?.touched || entryForm.controls.date?.dirty )">
+                        <div [hidden]="!entryForm.controls.date.errors?.required">dados obrigatórios</div>
+                    </div>
+                </div>
+
+                <!--paid-->
+                <div class="col-sm-2 mt-0">
+                    <label for="paid">Pagoh</label>
+                    <div class="btn-group">
+                        <label (click) = "entryForm.controls.paid.setValue(true)" [class.active]="entryForm.controls.paid.value == true" class="btn btn-outline-info">Pago</label>
+                        <label (click) = "entryForm.controls.paid.setValue(false)" [class.active]="entryForm.controls.paid.value == false" class="btn btn-outline-info">Pendente</label>
+                    </div>
+                    <div class="text-danger"
+                        *ngIf="!entryForm.controls.paid?.valid && (entryForm.controls.paid?.touched || entryForm.controls.paid?.dirty )">
+                        <div [hidden]="!entryForm.controls.paid.errors?.required">dados obrigatórios</div>
+                        <div [hidden]="!entryForm.controls.paid.errors?.minlength">deve ter no mínimo 2 caracteres
+                        </div>
+                    </div>
+                </div>
+
+                <!--CategoriaId-->
+                <div class="col-sm-2">
+                    <label for="categoryId">Categoria </label>
+                    <select id="categoryId" name="categoryId" class="form-control" formControlName="categoryId">
+                        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                    </select>
+                    <div class="text-danger"
+                        *ngIf="!entryForm.controls.categoryId?.valid && (entryForm.controls.categoryId?.touched || entryForm.controls.categoryId?.dirty )">
+                        <div [hidden]="!entryForm.controls.categoryId.errors?.required">dados obrigatórios</div>
+                    </div>
+                </div>
+
+                <!--descricao-->
                 <div class="col-sm-8">
                     <label for="description">Descrição </label>
                     <input type="text" id="descricao" class="form-control" formControlName="description">
@@ -42,11 +112,12 @@
     </div>
 
     <div class="alert alert-danger mt-3" *ngIf="serverErrorMessages.length > 0">
-        <strong>Erros no servidor: </strong> 
+        <strong>Erros no servidor: </strong>
         <ul>
             <li *ngFor="let error of serverErrorMessages">{{error}}</li>
         </ul>
 
     </div>
-    <button [disabled]= "submittingForm || entryForm.invalid " type="submit" class="btn btn-primary btn-log mt-3" style="float: right;">Salvar</button>
+    <button [disabled]="submittingForm || entryForm.invalid " type="submit" class="btn btn-primary btn-log mt-3"
+        style="float: right;">Salvar</button>
 </form>
