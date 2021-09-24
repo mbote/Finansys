@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<form [formGroup]="categoryForm" (submit) = "submitForm()">
+<form [formGroup]="resourceForm" (submit) = "submitForm()">
     <div class="card">
         <div class="card-header">
             Informações sobre a categoria
@@ -28,9 +28,9 @@
                 <div class="col-sm-4">
                     <label for="name">Nome </label>
                     <input type="text" id="nome" class="form-control" formControlName="name">
-                    <div class="text-danger" *ngIf="!categoryForm.controls.name?.valid && (categoryForm.controls.name?.touched || categoryForm.controls.name?.dirty )">
-                        <div [hidden]="!categoryForm.controls.name.errors?.required">dados obrigatórios</div>
-                        <div [hidden]="!categoryForm.controls.name.errors?.minlength">deve ter no mínimo 2 caracteres</div>
+                    <div class="text-danger" *ngIf="!resourceForm.controls.name?.valid && (resourceForm.controls.name?.touched || resourceForm.controls.name?.dirty )">
+                        <div [hidden]="!resourceForm.controls.name.errors?.required">dados obrigatórios</div>
+                        <div [hidden]="!resourceForm.controls.name.errors?.minlength">deve ter no mínimo 2 caracteres</div>
                     </div>
                 </div>
                 <div class="col-sm-8">
@@ -48,5 +48,5 @@
         </ul>
 
     </div>
-    <button [disabled]= "submittingForm || categoryForm.invalid " type="submit" class="btn btn-primary btn-log mt-3" style="float: right;">Salvar</button>
+    <button [disabled]= "submittingForm || resourceForm.invalid " type="submit" class="btn btn-primary btn-log mt-3" style="float: right;">Salvar</button>
 </form>
