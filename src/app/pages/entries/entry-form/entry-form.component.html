@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<form [formGroup]="entryForm" (submit)="submitForm()">
+<form [formGroup]="resourceForm" (submit)="submitForm()">
     <div class="card">
         <div class="card-header">
             Informações sobre o lançamento
@@ -32,8 +32,8 @@
                         <option *ngFor="let option of typeOption" [value]="option.value">{{ option.text }}</option>
                     </select>
                     <div class="text-danger"
-                        *ngIf="!entryForm.controls.type?.valid && (entryForm.controls.type?.touched || entryForm.controls.type?.dirty )">
-                        <div [hidden]="!entryForm.controls.type.errors?.required">dados obrigatórios</div>
+                        *ngIf="!resourceForm.controls.type?.valid && (resourceForm.controls.type?.touched || resourceForm.controls.type?.dirty )">
+                        <div [hidden]="!resourceForm.controls.type.errors?.required">dados obrigatórios</div>
                     </div>
                 </div>
                 <!--nome-->
@@ -41,9 +41,10 @@
                     <label for="name">Nome </label>
                     <input type="text" id="name" class="form-control" formControlName="name">
                     <div class="text-danger"
-                        *ngIf="!entryForm.controls.name?.valid && (entryForm.controls.name?.touched || entryForm.controls.name?.dirty )">
-                        <div [hidden]="!entryForm.controls.name.errors?.required">dados obrigatórios</div>
-                        <div [hidden]="!entryForm.controls.name.errors?.minlength">deve ter no mínimo 2 caracteres</div>
+                        *ngIf="!resourceForm.controls.name?.valid && (resourceForm.controls.name?.touched || resourceForm.controls.name?.dirty )">
+                        <div [hidden]="!resourceForm.controls.name.errors?.required">dados obrigatórios</div>
+                        <div [hidden]="!resourceForm.controls.name.errors?.minlength">deve ter no mínimo 2 caracteres
+                        </div>
                     </div>
                 </div>
                 <!--amount-->
@@ -57,9 +58,9 @@
                             formControlName="amount">
                     </div>
                     <div class="text-danger"
-                        *ngIf="!entryForm.controls.amount?.valid && (entryForm.controls.amount?.touched || entryForm.controls.amount?.dirty )">
-                        <div [hidden]="!entryForm.controls.amount.errors?.required">dados obrigatórios</div>
-                        <div [hidden]="!entryForm.controls.amount.errors?.minlength">deve ter no mínimo 2 caracteres
+                        *ngIf="!resourceForm.controls.amount?.valid && (resourceForm.controls.amount?.touched || resourceForm.controls.amount?.dirty )">
+                        <div [hidden]="!resourceForm.controls.amount.errors?.required">dados obrigatórios</div>
+                        <div [hidden]="!resourceForm.controls.amount.errors?.minlength">deve ter no mínimo 2 caracteres
                         </div>
                     </div>
                 </div>
@@ -70,8 +71,8 @@
                     <p-calendar id="date" formControlName="date" inputStyleClass="from-control" dataType="string"
                         dateFormat="dd/mm/yy" [locale]="ptBR" [showButtonBar]="true"></p-calendar>
                     <div class="text-danger"
-                        *ngIf="!entryForm.controls.date?.valid && (entryForm.controls.date?.touched || entryForm.controls.date?.dirty )">
-                        <div [hidden]="!entryForm.controls.date.errors?.required">dados obrigatórios</div>
+                        *ngIf="!resourceForm.controls.date?.valid && (resourceForm.controls.date?.touched || resourceForm.controls.date?.dirty )">
+                        <div [hidden]="!resourceForm.controls.date.errors?.required">dados obrigatórios</div>
                     </div>
                 </div>
 
@@ -79,13 +80,17 @@
                 <div class="col-sm-2 mt-0">
                     <label for="paid">Pagoh</label>
                     <div class="btn-group">
-                        <label (click) = "entryForm.controls.paid.setValue(true)" [class.active]="entryForm.controls.paid.value == true" class="btn btn-outline-info">Pago</label>
-                        <label (click) = "entryForm.controls.paid.setValue(false)" [class.active]="entryForm.controls.paid.value == false" class="btn btn-outline-info">Pendente</label>
+                        <label (click)="resourceForm.controls.paid.setValue(true)"
+                            [class.active]="resourceForm.controls.paid.value == true"
+                            class="btn btn-outline-info">Pago</label>
+                        <label (click)="resourceForm.controls.paid.setValue(false)"
+                            [class.active]="resourceForm.controls.paid.value == false"
+                            class="btn btn-outline-info">Pendente</label>
                     </div>
                     <div class="text-danger"
-                        *ngIf="!entryForm.controls.paid?.valid && (entryForm.controls.paid?.touched || entryForm.controls.paid?.dirty )">
-                        <div [hidden]="!entryForm.controls.paid.errors?.required">dados obrigatórios</div>
-                        <div [hidden]="!entryForm.controls.paid.errors?.minlength">deve ter no mínimo 2 caracteres
+                        *ngIf="!resourceForm.controls.paid?.valid && (resourceForm.controls.paid?.touched || resourceForm.controls.paid?.dirty )">
+                        <div [hidden]="!resourceForm.controls.paid.errors?.required">dados obrigatórios</div>
+                        <div [hidden]="!resourceForm.controls.paid.errors?.minlength">deve ter no mínimo 2 caracteres
                         </div>
                     </div>
                 </div>
@@ -97,8 +102,8 @@
                         <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
                     </select>
                     <div class="text-danger"
-                        *ngIf="!entryForm.controls.categoryId?.valid && (entryForm.controls.categoryId?.touched || entryForm.controls.categoryId?.dirty )">
-                        <div [hidden]="!entryForm.controls.categoryId.errors?.required">dados obrigatórios</div>
+                        *ngIf="!resourceForm.controls.categoryId?.valid && (resourceForm.controls.categoryId?.touched || resourceForm.controls.categoryId?.dirty )">
+                        <div [hidden]="!resourceForm.controls.categoryId.errors?.required">dados obrigatórios</div>
                     </div>
                 </div>
 
@@ -118,6 +123,6 @@
         </ul>
 
     </div>
-    <button [disabled]="submittingForm || entryForm.invalid " type="submit" class="btn btn-primary btn-log mt-3"
+    <button [disabled]="submittingForm || resourceForm.invalid " type="submit" class="btn btn-primary btn-log mt-3"
         style="float: right;">Salvar</button>
 </form>

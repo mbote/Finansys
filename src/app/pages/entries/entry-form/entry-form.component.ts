@@ -1,30 +1,20 @@
-import { CategoriesModule } from './../../categories/categories.module';
-import { EntriesModule } from './../entries.module';
-import { Component, OnInit, AfterContentChecked } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Injector, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+
+import { BaseResourceFormComponent } from '../../../shared/components/base-resource-form/base-resource.component';
 
 import { Entry } from '../shared/entry.model';
 import { EntryService } from '../shared/entry.service';
+
 import { Category } from '../../categories/shared/category.model';
 import { CategoryService } from '../../categories/shared/category.service';
-
-import { switchMap } from 'rxjs/Operators';
-import * as toastr from 'toastr';
-
 @Component({
   selector: 'app-entry-form',
   templateUrl: './entry-form.component.html',
   styleUrls: ['./entry-form.component.css']
 })
-export class EntryFormComponent implements OnInit, AfterContentChecked {
+export class EntryFormComponent extends BaseResourceFormComponent<Entry> implements OnInit {
 
-  currentAction!: string;
-  entryForm!: FormGroup;
-  pageTitle!: string;
-  serverErrorMessages: string[] = [];
-  submittingForm: boolean = false;
-  entry: Entry = new Entry();
   categories!: Array<Category>;
   typeOption!: Array<any>
 
@@ -49,33 +39,18 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   };
 
   constructor(
-    private entryService: EntryService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private categoryService: CategoryService
-  ) { }
+    protected entryService: EntryService,
+    protected categoryService: CategoryService,
+    protected injector: Injector
+  ) {
+    super(injector, new Entry(), entryService, Entry.fromJson);
+  }
 
   ngOnInit(): void {
-    this.setCurrentAction();
-    this.buildEntryForm();
-    this.loadEntry();
     this.loadCategories();
     this.typeOpy();
+    super.ngOnInit();
   }
-
-  ngAfterContentChecked(): void {
-    this.setPageTitle();
-  }
-
-  submitForm() {
-    this.submittingForm = true;
-    if (this.currentAction == "new")
-      this.createEntry();
-    else
-      this.updateEntry();
-  }
-
 
   typeOpy() {
     this.typeOption = [];
@@ -99,49 +74,8 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     )
   }
 
-  createEntry() {
-    const entry: Entry = Entry.fromJson(this.entryForm.value);
-    this.entryService.create(entry)
-      .subscribe(
-        entry => this.actionsForSuccess(entry),
-        error => this.actionsForError(error)
-      )
-  }
-
-  updateEntry() {
-    const entry: Entry = Entry.fromJson(this.entryForm.value);
-    this.entryService.update(entry)
-      .subscribe(
-        entry => this.actionsForSuccess(entry),
-        error => this.actionsForError(error)
-      )
-  }
-
-  private actionsForSuccess(entry: Entry) {
-    toastr.success("Solicitação processada com sucesso");
-    this.router.navigateByUrl("entries", { skipLocationChange: true }).then(
-      () => this.router.navigate(["entries", entry.id, "edit"])
-    )
-  }
-
-  private actionsForError(error: any) {
-    toastr.error("Ocorreu um erro ao processar a sua solicitação");
-    this.submittingForm = false;
-    if (error.status == 422)
-      this.serverErrorMessages = JSON.parse(error._body).errors;
-    else
-      this.serverErrorMessages = ["Falha na comunicação com o servidor. Por favor tente mais tarde"];
-  }
-
-  private setCurrentAction() {
-    if (this.route.snapshot.url[0].path == "new")
-      this.currentAction = "new";
-    else
-      this.currentAction = "edit";
-  }
-
-  private buildEntryForm() {
-    this.entryForm = this.formBuilder.group({
+  protected buildResourceForm() {
+    this.resourceForm = this.formBuilder.group({
       id: [null],
       name: [null, Validators.required, Validators.minLength(2)],
       description: [null],
@@ -153,34 +87,19 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     })
   }
 
-  private loadEntry() {
-    if (this.currentAction == "edit") {
-      this.route.paramMap.pipe(
-        switchMap(params => this.entryService.getId(+ params.get("id")!))
-      )
-        .subscribe(
-          (entry) => {
-            this.entry = entry,
-              this.entryForm.patchValue(entry)
-          },
-          (error) => toastr.error("Ocorreu um erro no servidor, tenta mais tarde")
-        )
-    }
-  }
-
   private loadCategories() {
     this.categoryService.getAll().subscribe(
       (categories => this.categories = categories)
     )
   }
 
-  private setPageTitle() {
-    if (this.currentAction == "new")
-      this.pageTitle = "Registar novo lançamento";
-    else {
-      const entryName = this.entry.name || "";
-      this.pageTitle = "Editar o lançamento: " + entryName;
-    }
+  protected creationPageTitle(): string {
+    return "Registo de novo lançamento";
+  }
+
+  protected editionPageTitle(): string {
+    const resuorceName = this.resource.name
+    return "Editando lançamento " + resuorceName;
   }
 
 }
