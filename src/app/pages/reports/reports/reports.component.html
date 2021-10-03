@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-sm-7">
                 <label for="month">Mês</label>
-                <select class="form-control" id="month" name ="month" #month>
+                <select #month class="form-control" id="month" name ="month">
                     <option value="">Seleciona um mês</option>
                     <option value="1">Janeiro</option>
                     <option value="2">Fevereiro</option>
@@ -46,7 +46,7 @@
         </div>
         <div class="row">
             <div class="col-md text-right mt-2">
-                <button type="button" class="bt btn-primary" style="float:right">
+                <button type="button" class="btn btn-primary" style="float:right" (click)="generateReports()">
                     Gerar relatórios
                 </button>
             </div>
@@ -60,7 +60,7 @@
             Total de receitas
         </div>
         <div class="card-boby">
-            <h3 class="card-title">1500</h3>
+            <h3 class="card-title">{{revenueTotal}}</h3>
         </div>
     </div>
     <div class="card text-center text-white bg-danger col-sm-3" style="margin-left: 50px;">
@@ -68,7 +68,7 @@
             Total de despesas
         </div>
         <div class="card-boby">
-            <h3 class="card-title">1500</h3>
+            <h3 class="card-title">{{expenseTotal}}</h3>
         </div>
     </div>
     <div class="card text-center text-white bg-info col-sm-3" style="margin-left: 50px;">
@@ -76,7 +76,7 @@
             Saldo
         </div>
         <div class="card-boby">
-            <h3 class="card-title">1500</h3>
+            <h3 class="card-title">{{balance}}</h3>
         </div>
     </div>
 </div>
@@ -85,9 +85,9 @@
 
 <div class="row mt-5">
     <div class="col-sm-6">
-        Gráfico de receitas
+        <p-chart type="bar" [data] = "revenueChartData" [options]="chartOption"></p-chart>
     </div>
     <div class="col-sm-6">
-        Gráfico de despesas
+        <p-chart type="bar" [data] = "expenseChartData" [options]="chartOption"></p-chart>
     </div>
 </div>

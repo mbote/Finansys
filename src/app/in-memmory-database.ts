@@ -13,11 +13,11 @@ export class InMemoryDataBase implements InMemoryDbService {
         ];
 
         const entries: Entry[] = [
-            { id: 1, name: "Gás da cozinha", categoryId: categories[0].id, category: categories[0], paid: true, date: "13/09/2021", amount: "70.60", type: "expense", description: "Gás da cozinha" } as Entry,
-            { id: 2, name: "Gás da cozinha", categoryId: categories[1].id, category: categories[1], paid: false, date: "13/09/2021", amount: "70.60", type: "revenue", description: "Gás da cozinha" } as Entry,
-            { id: 3, name: "Gás da cozinha", categoryId: categories[2].id, category: categories[2], paid: true, date: "13/09/2021", amount: "70.60", type: "expense", description: "Gás da cozinha" } as Entry,
-            { id: 4, name: "Gás da cozinha", categoryId: categories[3].id, category: categories[3], paid: false, date: "13/09/2021", amount: "70.60", type: "revenue", description: "Gás da cozinha" } as Entry,
-            { id: 5, name: "Gás da cozinha", categoryId: categories[4].id, category: categories[4], paid: true, date: "13/09/2021", amount: "70.60", type: "expense", description: "Gás da cozinha" } as Entry
+            { id: 1, name: "Casa", categoryId: categories[0].id, category: categories[0], paid: true, date: "13/09/2021", amount: "70.60", type: "expense", description: "Gás da cozinha" } as Entry,
+            { id: 2, name: "Plano de saúde", categoryId: categories[1].id, category: categories[1], paid: false, date: "13/09/2021", amount: "70.60", type: "revenue", description: "Gás da cozinha" } as Entry,
+            { id: 3, name: "Lazer", categoryId: categories[2].id, category: categories[2], paid: true, date: "13/09/2021", amount: "70.60", type: "expense", description: "Gás da cozinha" } as Entry,
+            { id: 4, name: "Salário", categoryId: categories[3].id, category: categories[3], paid: false, date: "13/09/2021", amount: "70.60", type: "revenue", description: "Gás da cozinha" } as Entry,
+            { id: 5, name: "Freelas", categoryId: categories[4].id, category: categories[4], paid: true, date: "13/09/2021", amount: "70.60", type: "expense", description: "Gás da cozinha" } as Entry
         ]
 
         return { categories, entries };
