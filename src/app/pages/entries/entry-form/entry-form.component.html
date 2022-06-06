@@ -50,10 +50,10 @@
                     <label for="paid">Pagoh</label>
                     <div class="btn-group">
                         <label (click)="resourceForm.controls.paid.setValue(true)"
-                            [class.active]="resourceForm.controls.paid.value == true"
+                            [class.active]="resourceForm.controls.paid.value === true"
                             class="btn btn-outline-info">Pago</label>
                         <label (click)="resourceForm.controls.paid.setValue(false)"
-                            [class.active]="resourceForm.controls.paid.value == false"
+                            [class.active]="resourceForm.controls.paid.value === false"
                             class="btn btn-outline-info">Pendente</label>
                     </div>
                     <app-form-field-error [form-control]="$any(resourceForm.controls.paid)"></app-form-field-error>

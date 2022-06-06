@@ -29,7 +29,7 @@
                 {{entry.category?.name}}
             </td>
             <td>
-                <strong [class.text-success] = "entry.type == 'revenue'" [class.text-danger] = "entry.type == 'expense'">
+                <strong [class.text-success] = "entry.type === 'revenue'" [class.text-danger] = "entry.type === 'expense'">
                     {{entry.amount}}
                 </strong>
                 <br>
